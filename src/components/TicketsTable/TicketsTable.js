@@ -680,6 +680,7 @@ const columns = [
   {
     title: "Labels",
     key: "labels",
+    render: (item) => item.reduce((a, c)=>a+", "+c)
   },
   {
     title: "Name",
