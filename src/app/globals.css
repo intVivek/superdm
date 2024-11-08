@@ -3,26 +3,23 @@
 @tailwind utilities;
 
 
-body {
-  font-family: Arial, Helvetica, sans-serif;
+* {
+  @font-family: -apple-system, BlinkMacSystemFont, 'Segoe UI', Roboto, 'Helvetica Neue', Arial,
+  'Noto Sans', sans-serif, 'Apple Color Emoji', 'Segoe UI Emoji', 'Segoe UI Symbol',
+  'Noto Color Emoji';
 }
 
-.ant-table-row{
+.arrow-navigation-row{
   border: none;
   outline: none;
 }
 
-.ant-table-row:hover {
+.arrow-navigation-row:hover {
   background-color: #f7f7f7; 
   cursor: pointer;        
 }
 
-.ant-table-cell-row-hover {
-  background-color: #f7f7f7 !important;
-  cursor: pointer;        
-}
-
-.ant-table-row:focus {
+.arrow-navigation-row:focus {
   background-color: #f7f7f7; 
   cursor: pointer;        
 }
