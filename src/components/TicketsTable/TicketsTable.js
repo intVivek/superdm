@@ -1,11 +1,9 @@
 import useArrowNavigation from "@/hooks/useArrowNavigation";
 
-import {
-  useMemo,
-  useState,
-} from "react";
+import { useMemo, useState } from "react";
 import Table from "../Table/Table";
 import moment from "moment";
+import DetailsModal from "../DetailsModal/DetailsModal";
 
 const dataSourceMock = [
   {
@@ -676,7 +674,7 @@ const columns = [
   {
     title: "Labels",
     key: "labels",
-    render: (item) => item.reduce((a, c)=>a+", "+c)
+    render: (item) => item.reduce((a, c) => a + ", " + c),
   },
   {
     title: "Name",
@@ -685,12 +683,12 @@ const columns = [
   {
     title: "Due Date",
     key: "dueDate",
-    render: (item) => moment(item).format('DD-MMM-YY')
+    render: (item) => moment(item).format("DD-MMM-YY"),
   },
   {
     title: "Created",
     key: "created",
-    render: (item) => moment(item).format('DD-MMM-YY')
+    render: (item) => moment(item).format("DD-MMM-YY"),
   },
   {
     title: "Assignee",
@@ -701,14 +699,36 @@ const columns = [
 export default function TicketsTable() {
   const [page, setPage] = useState(1);
   const { ref } = useArrowNavigation();
+  const [selectedRow, setSelectedRow] = useState(-1);
 
   const dataSource = useMemo(() => {
     return dataSourceMock.slice(0, 8 * page);
   }, [page]);
 
   const onBottomHandler = () => {
-    setPage(p=>p+1)
-  }
+    setPage((p) => p + 1);
+  };
 
-  return <Table bodyRef={ref} columns={columns} onBottom={onBottomHandler} data={dataSource} />;
+  const onClickHandler = (row, i) => {
+    setSelectedRow(row.id);
+  };
+
+  return (
+    <>
+      <Table
+        bodyRef={ref}
+        columns={columns}
+        onBottom={onBottomHandler}
+        data={dataSource}
+        onClick={onClickHandler}
+      />
+      {selectedRow !== -1 && (
+        <DetailsModal
+          data={dataSource.find((item) => item.id === selectedRow)}
+          isOpen={selectedRow !== -1}
+          onClose={() => setSelectedRow(-1)}
+        />
+      )}
+    </>
+  );
 }

@@ -12,7 +12,7 @@ const Cell = ({ className, ...props }) => (
   />
 );
 
-const Table = ({ loading, columns, bodyRef, data, onBottom }) => {
+const Table = ({ loading, columns, bodyRef, data, onBottom, onClick }) => {
   const bottomRef = useRef();
 
   const isVisible = useIsVisible(bottomRef);
@@ -41,13 +41,19 @@ const Table = ({ loading, columns, bodyRef, data, onBottom }) => {
         {loading ? (
           <TableSkeletonLoading />
         ) : (
-          <div ref={bodyRef} className="bg-white relative">
+          <div ref={bodyRef} className="bg-white relative" >
             {data?.map((row, index) => {
               return (
                 <div
                   tabIndex={0}
                   key={index}
                   className={"flex arrow-navigation-row"}
+                  onClick={(e)=>onClick(row, index, e)}
+                  onKeyDown={(e) =>{
+                    if (e.key === "Enter") {
+                      onClick(row, index, e);
+                    }
+                  }} 
                 >
                   {columns.map(({ render, key }, i) => (
                     <Cell
