@@ -1,15 +1,11 @@
 import useArrowNavigation from "@/hooks/useArrowNavigation";
-import useIsVisible from "@/hooks/useIsVisible";
-import { Table as AntDTable } from "antd";
+
 import {
-  useCallback,
-  useEffect,
-  useLayoutEffect,
   useMemo,
-  useRef,
   useState,
 } from "react";
 import Table from "../Table/Table";
+import moment from "moment";
 
 const dataSourceMock = [
   {
@@ -689,10 +685,12 @@ const columns = [
   {
     title: "Due Date",
     key: "dueDate",
+    render: (item) => moment(item).format('DD-MMM-YY')
   },
   {
     title: "Created",
     key: "created",
+    render: (item) => moment(item).format('DD-MMM-YY')
   },
   {
     title: "Assignee",
@@ -701,18 +699,16 @@ const columns = [
 ];
 
 export default function TicketsTable() {
-  const bottomRef = useRef();
   const [page, setPage] = useState(1);
-  const { ref } = useArrowNavigation(".arrow-navigation-row");
-  const isVisible = useIsVisible(bottomRef);
-  useLayoutEffect(() => {
-    console.log(isVisible);
-    if (isVisible) setPage(page + 1);
-  }, [isVisible, bottomRef]);
+  const { ref } = useArrowNavigation();
 
   const dataSource = useMemo(() => {
-    return dataSourceMock.slice(0, 4 * page);
-  }, [page, bottomRef]);
+    return dataSourceMock.slice(0, 8 * page);
+  }, [page]);
 
-  return <Table bodyRef={ref} columns={columns} data={dataSourceMock} />;
+  const onBottomHandler = () => {
+    setPage(p=>p+1)
+  }
+
+  return <Table bodyRef={ref} columns={columns} onBottom={onBottomHandler} data={dataSource} />;
 }

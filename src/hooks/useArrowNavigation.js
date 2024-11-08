@@ -1,6 +1,6 @@
 import { useLayoutEffect, useRef, useState } from "react";
 
-const useArrowNavigation = (selector) => {
+const useArrowNavigation = () => {
     const [selectedIndex, setSelectedIndex] = useState(0);
     const ref = useRef();
 
@@ -16,7 +16,7 @@ const useArrowNavigation = (selector) => {
   
       const handleClick = (e) => {
         const rows = ref?.current?.childNodes || [];
-        const clickedRow = e.target.closest(selector);
+        const clickedRow = e.target.parentNode;
         if (clickedRow) {
           const index = Array.from(rows).indexOf(clickedRow);
           setSelectedIndex(index);
