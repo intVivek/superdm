@@ -1,4 +1,6 @@
+import useArrowNavigation from "@/hooks/useArrowNavigation";
 import { Table } from "antd";
+import { useLayoutEffect, useState } from "react";
 
 const dataSource = [
   {
@@ -34,6 +36,83 @@ const dataSource = [
     created: "2024-11-07",
     assignee: "Alice Johnson",
   },
+  {
+    key: "4",
+    priority: "High",
+    id: "T004",
+    status: "Open",
+    labels: ["Feature", "Critical"],
+    name: "Implement user authentication",
+    dueDate: "2024-12-01",
+    created: "2024-11-05",
+    assignee: "Chris Green",
+  },
+  {
+    key: "5",
+    priority: "Medium",
+    id: "T005",
+    status: "In Progress",
+    labels: ["Bug"],
+    name: "Resolve payment gateway issue",
+    dueDate: "2024-11-18",
+    created: "2024-11-08",
+    assignee: "Sophia Brown",
+  },
+  {
+    key: "6",
+    priority: "Low",
+    id: "T006",
+    status: "Closed",
+    labels: ["Refactor"],
+    name: "Refactor API integration",
+    dueDate: "2024-11-12",
+    created: "2024-11-06",
+    assignee: "David Lee",
+  },
+  {
+    key: "7",
+    priority: "High",
+    id: "T007",
+    status: "Open",
+    labels: ["Security", "Urgent"],
+    name: "Patch vulnerability in login module",
+    dueDate: "2024-11-25",
+    created: "2024-11-09",
+    assignee: "Olivia Martinez",
+  },
+  {
+    key: "8",
+    priority: "Medium",
+    id: "T008",
+    status: "In Progress",
+    labels: ["UI", "Enhancement"],
+    name: "Add dark mode feature",
+    dueDate: "2024-11-22",
+    created: "2024-11-08",
+    assignee: "Liam Wilson",
+  },
+  {
+    key: "9",
+    priority: "Low",
+    id: "T009",
+    status: "Closed",
+    labels: ["Optimization"],
+    name: "Optimize image loading on homepage",
+    dueDate: "2024-11-13",
+    created: "2024-11-07",
+    assignee: "Emma Thompson",
+  },
+  {
+    key: "10",
+    priority: "Medium",
+    id: "T010",
+    status: "Open",
+    labels: ["Database", "Bug"],
+    name: "Resolve data inconsistency issue",
+    dueDate: "2024-11-28",
+    created: "2024-11-08",
+    assignee: "Noah White",
+  },
 ];
 
 const columns = [
@@ -56,7 +135,7 @@ const columns = [
     title: "Labels",
     dataIndex: "labels",
     key: "labels",
-    render: (labels) => labels.join(", "), 
+    render: (labels) => labels.join(", "),
   },
   {
     title: "Name",
@@ -79,7 +158,20 @@ const columns = [
     key: "assignee",
   },
 ];
-
 export default function TicketsTable() {
-  return <Table bordered dataSource={dataSource} columns={columns} />;
+    
+  useArrowNavigation(".enable-arrow-navigation");
+
+  return (
+    <Table
+      bordered
+      dataSource={dataSource}
+      columns={columns}
+      rowClassName={"enable-arrow-navigation"}
+      pagination={false}
+      onRow={() => ({
+        tabIndex: 0,
+      })}
+    />
+  );
 }
