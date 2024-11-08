@@ -3,30 +3,19 @@
 import { Tabs } from "antd";
 import { useMemo } from "react";
 import { Typography } from "antd";
-import Header from "../Header/Header";
+import TicketsTable from "../TicketsTable/TicketsTable";
 
 const { Title } = Typography;
 
+const tabsType = ['Open', 'In Progress', 'Closed'];
+
+const items = tabsType.map((tab, index) => ({
+    label: <div className="font-medium">{tab}</div>,
+    key: String(index + 1),
+  }));
+;
+
 export default function Dashboard() {
-  const items = useMemo(() => {
-    return [
-      {
-        label: <div className="font-medium">Open</div>,
-        key: "1",
-        children: "Content of Open tab",
-      },
-      {
-        label: <div className="font-medium">In Progress</div>,
-        key: "2",
-        children: "Content of In Progress tab",
-      },
-      {
-        label: <div className="font-medium">Closed</div>,
-        key: "3",
-        children: "Content of Closed tab",
-      },
-    ];
-  }, []);
 
   return (
     <div className="w-screen flex justify-center">
@@ -43,6 +32,7 @@ export default function Dashboard() {
           animated={{ inkBar: true, tabPane: true }}
           className="mt-8"
         />
+        <TicketsTable />
       </div>
     </div>
   );
