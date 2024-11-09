@@ -1,14 +1,16 @@
-import React, { useEffect, useLayoutEffect, useRef, useState } from "react";
-import { Avatar, Button, Input, List, Skeleton, Space } from "antd";
+import React, { useEffect, useState } from "react";
+import { Avatar, Button, List, Skeleton } from "antd";
 import useComments from "@/hooks/useComments";
 import { SendOutlined } from "@ant-design/icons";
 import TextArea from "antd/es/input/TextArea";
+import useCommentsMutation from "@/hooks/useCommentsMutation";
 
 const Comments = ({ ticket }) => {
   const [page, setPage] = useState(1);
   const [comment, setComment] = useState("");
   const { data, isFetching, isLoading, refetch } = useComments(page, ticket?.id);
-  //   const [initLoading, setInitLoading] = useState(true);
+
+  const updateComments = useCommentsMutation()
 
   const onLoadMore = () => {
     setPage(page + 1);
@@ -37,6 +39,16 @@ const Comments = ({ ticket }) => {
     e.stopPropagation();
     setComment(e.target.value);
   };
+
+  
+
+  const handleAddComment = async () => {
+    if(!comment) return;
+    await updateComments.mutateAsync({text: comment, author: 'vivek', ticketId: ticket?.id})
+    setComment('')
+    setPage(1)
+    refetch(page, ticket?.id)
+  }
   return (
     <div>
       <div className="flex items-end gap-4 mt-4">
@@ -49,7 +61,7 @@ const Comments = ({ ticket }) => {
           value={comment}
           onChange={handleInputChange}
         />
-        <Button icon={<SendOutlined />} shape="circle" type="primary"></Button>
+        <Button icon={<SendOutlined />} loading={updateComments.isLoading} onClick={handleAddComment} shape="circle" type="primary"></Button>
       </div>
 
       <List
@@ -57,7 +69,7 @@ const Comments = ({ ticket }) => {
         itemLayout="horizontal"
         loadMore={loadMore}
         dataSource={data?.comments || []}
-        loading={isLoading}
+        loading={isLoading || (page===1 && isFetching)}
         renderItem={(item) => (
           <List.Item>
             <Skeleton avatar title={false} loading={false} active>
