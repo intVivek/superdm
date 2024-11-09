@@ -1,7 +1,9 @@
 import useIsVisible from "@/hooks/useIsVisible";
-import { Typography } from "antd";
-import { useLayoutEffect, useRef } from "react";
+import { LoadingOutlined } from "@ant-design/icons";
+import { Spin, Typography } from "antd";
+import { useEffect, useLayoutEffect, useRef } from "react";
 import { twMerge } from "tailwind-merge";
+import { useIntersectionObserver } from "usehooks-ts";
 
 const { Text } = Typography;
 
@@ -15,14 +17,16 @@ const Cell = ({ className, ...props }) => (
   />
 );
 
-const Table = ({ loading, columns, bodyRef, data, onBottom, onClick, isLast }) => {
-  const bottomRef = useRef();
+const Table = ({ loading, columns, bodyRef, data, onBottom, onClick, isLast, isFetching }) => {
 
-  const isVisible = useIsVisible(bottomRef);
+  const { isIntersecting, ref } = useIntersectionObserver({
+    threshold: 0.5,
+  })
 
-  useLayoutEffect(() => {
-    if (isVisible) onBottom();
-  }, [isVisible, bottomRef]);
+  useEffect(()=>{
+    if(isFetching) return
+    if (isIntersecting) onBottom();
+  }, [isFetching, isIntersecting, ref])
 
   return (
     <div className="overflow-hidden border border-gray100 rounded-[8px] mb-8 mt-4 h-max max-h-[50vh]">
@@ -43,7 +47,7 @@ const Table = ({ loading, columns, bodyRef, data, onBottom, onClick, isLast }) =
           ))}
         </div>
         {loading ? (
-          <TableSkeletonLoading />
+          <div className="w-full h-[200px] grid place-items-center"> <Spin indicator={<LoadingOutlined spin />} size="large" /></div>
         ) : (<>
           <div ref={bodyRef} className="bg-white relative">
             {data?.map((row, index) => {
@@ -72,7 +76,7 @@ const Table = ({ loading, columns, bodyRef, data, onBottom, onClick, isLast }) =
             })}
         
           </div>
-              {!isLast && <div  ref={bottomRef} className="flex w-full border-t border-gray100 justify-center py-2"><Text type="secondary">Loading...</Text></div> }</>
+              {!isLast && <div  ref={ref} className="flex w-full border-t border-gray100 justify-center py-2"><Text type="secondary">Loading...</Text></div> }</>
         )}
       </div>
     </div>
@@ -80,20 +84,3 @@ const Table = ({ loading, columns, bodyRef, data, onBottom, onClick, isLast }) =
 };
 
 export default Table;
-
-const TableSkeletonLoading = ({ rows = 5 }) => {
-  return (
-    <div className="w-full h-max bg-white overflow-hidden">
-      {Array.from({ length: rows }).map((_, index) => (
-        <div
-          key={index}
-          className="flex mx-1 w-full justify-around mt-4 animate-pulse"
-        >
-          <div className="w-[90px] flex-shrink-0 h-[26px] bg-graySkeleton rounded"></div>
-          <div className="w-[90px] flex-shrink-0 h-[26px] bg-graySkeleton rounded"></div>
-          <div className="w-[90px] flex-shrink-0 h-[26px] bg-graySkeleton rounded"></div>
-        </div>
-      ))}
-    </div>
-  );
-};

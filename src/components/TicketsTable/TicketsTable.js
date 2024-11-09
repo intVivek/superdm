@@ -55,7 +55,7 @@ export default function TicketsTable({
   const [isLast, setIsLast] = useState(false);
   const [page, setPage] = useState(1);
 
-  const { data, refetch } = useTickets(page, selectedTab);
+  const { data, isFetching, refetch } = useTickets(page, selectedTab);
 
   const { ref, resetNavigation } = useArrowNavigation({
     disabled: selectedRow !== -1,
@@ -73,9 +73,8 @@ export default function TicketsTable({
   };
 
   useEffect(() => {
-    setPage(1);
     resetNavigation();
-    debouncedOnBottomHandler();
+    setPage(1);
   }, [selectedTab]);
 
   useEffect(() => {
@@ -91,6 +90,8 @@ export default function TicketsTable({
         data={data?.data}
         onClick={onClickHandler}
         isLast={isLast}
+        isFetching={isFetching}
+        loading={isFetching && page===1}
       />
       {selectedRow !== -1 && (
         <DetailsModal
