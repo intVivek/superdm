@@ -3,14 +3,16 @@ import useArrowNavigation from "@/hooks/useArrowNavigation";
 import { useCallback, useEffect, useMemo, useState } from "react";
 import Table from "../Table/Table";
 import moment from "moment";
-import DetailsModal from "../DetailsModal/DetailsModal";
+import DetailsModal, { getPriorityBadge } from "../DetailsModal/DetailsModal";
 import { useDebounceCallback } from "usehooks-ts";
 import useTickets from "@/hooks/useTickets";
+import Badge from "../Badge/Badge";
 
 const columns = [
   {
     title: "Priority",
     key: "priority",
+    render: (item)=> (getPriorityBadge(item))
   },
   {
     title: "ID",
@@ -23,7 +25,7 @@ const columns = [
   {
     title: "Labels",
     key: "labels",
-    render: (item) => item.reduce((a, c) => a + ", " + c),
+    render: (items) => <div className="flex gap-1">{items.map((item, i)=><Badge key={i} label={item} />)}</div>,
   },
   {
     title: "Name",
@@ -61,7 +63,6 @@ export default function TicketsTable({
   });
 
   const onBottomHandler = () => {
-    console.log('bottom')
     setPage((p) => p + 1);
   };
 
@@ -74,7 +75,7 @@ export default function TicketsTable({
   useEffect(() => {
     setPage(1);
     resetNavigation();
-    debouncedOnBottomHandler()
+    debouncedOnBottomHandler();
   }, [selectedTab]);
 
   useEffect(() => {

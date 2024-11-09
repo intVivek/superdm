@@ -17,8 +17,7 @@ import Comments from "../Comments/Comments";
 
 const { Text } = Typography;
 
-const getPriorityBadge = (priority) => {
-  console.log(priority);
+export const getPriorityBadge = (priority) => {
   switch (priority) {
     case "High":
       return <Tag count="High Priority" />;
@@ -56,7 +55,6 @@ export default function DetailsModal({ data, isOpen, onClose, onSuccess }) {
 
   const handleChangeStatus = async () => {
     await updateTickets.mutateAsync({id: data.id, data: {status: openConfirmModal}})
-    console.log(openConfirmModal)
     await onSuccess()
     setOpenConfirmModal(-1)
   }

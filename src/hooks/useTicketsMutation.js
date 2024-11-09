@@ -1,7 +1,6 @@
 import { useMutation } from "react-query";
 
 const updateTicket = async ({id, data}) => {
-    console.log({id, data})
   try {
     const response = await fetch(`/api/ticket/${id}`, {
       method: "PATCH",

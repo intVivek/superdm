@@ -14,7 +14,6 @@ const useComments = (page, id) => {
     return useQuery({
         queryKey: ['comments', page, id],
         queryFn: ()=>fetchComments(page, id),
-        staleTime: 1000 * 60 * 5,
         keepPreviousData: true,
       });
   };
