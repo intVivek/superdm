@@ -53,7 +53,7 @@ export default function TicketsTable({
   const [isLast, setIsLast] = useState(false);
   const [page, setPage] = useState(1);
 
-  const { data, isFetching, refetch } = useTickets(page, selectedTab);
+  const { data, refetch } = useTickets(page, selectedTab);
 
   const { ref, resetNavigation } = useArrowNavigation({
     disabled: selectedRow !== -1,
@@ -61,6 +61,7 @@ export default function TicketsTable({
   });
 
   const onBottomHandler = () => {
+    console.log('bottom')
     setPage((p) => p + 1);
   };
 
@@ -73,6 +74,7 @@ export default function TicketsTable({
   useEffect(() => {
     setPage(1);
     resetNavigation();
+    debouncedOnBottomHandler()
   }, [selectedTab]);
 
   useEffect(() => {

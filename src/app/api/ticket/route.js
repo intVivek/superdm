@@ -7,7 +7,7 @@ export async function GET(request) {
 
   const tickets = getSharedData("tickets");
   try {
-    await delay(1000);
+    await delay(2000);
     const { searchParams } = new URL(request.url);
 
     const page = searchParams.get("page") || "1";
