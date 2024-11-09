@@ -56,10 +56,6 @@ export default function TicketsTable({selectedTab}) {
 
   const { ref, resetNavigation } = useArrowNavigation({deps: [selectedTab, page, data]});
 
-  useEffect(()=>{
-    refetch(page, selectedTab)
-  }, [page, selectedTab])
-
   const onBottomHandler = () => {
     setPage((p) => p + 1);
   };

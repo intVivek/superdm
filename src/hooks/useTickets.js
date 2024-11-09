@@ -14,7 +14,7 @@ const useTickets = (page, selectedTab) => {
     return useQuery({
         queryKey: ['tickets', page, selectedTab],
         queryFn: ()=>fetchTickets(page, selectedTab),
-        enabled: false
+        staleTime: 1000 * 60 * 5,
       });
   };
 
