@@ -7,7 +7,7 @@ import TextArea from "antd/es/input/TextArea";
 const Comments = ({ ticket }) => {
   const [page, setPage] = useState(1);
   const [comment, setComment] = useState("");
-  const { data, isFetching, refetch } = useComments(page, ticket?.id);
+  const { data, isFetching, isLoading, refetch } = useComments(page, ticket?.id);
   //   const [initLoading, setInitLoading] = useState(true);
 
   const onLoadMore = () => {
@@ -18,8 +18,7 @@ const Comments = ({ ticket }) => {
     refetch(page, ticket?.id);  
   }, [page]);
 
-  const loadMore =
-    !isFetching && data?.cursor?.has_next_message ? (
+  const loadMore = data?.cursor?.has_next_message ? (
       <div
         style={{
           textAlign: "center",
@@ -58,9 +57,10 @@ const Comments = ({ ticket }) => {
         itemLayout="horizontal"
         loadMore={loadMore}
         dataSource={data?.comments || []}
+        loading={isLoading}
         renderItem={(item) => (
           <List.Item>
-            <Skeleton avatar title={false} loading={item.loading} active>
+            <Skeleton avatar title={false} loading={false} active>
               <List.Item.Meta
                 avatar={
                   <Avatar

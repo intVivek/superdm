@@ -1,7 +1,9 @@
 import useIsVisible from "@/hooks/useIsVisible";
-import { Skeleton, Spin } from "antd";
-import { useEffect, useLayoutEffect, useRef } from "react";
+import { Typography } from "antd";
+import { useLayoutEffect, useRef } from "react";
 import { twMerge } from "tailwind-merge";
+
+const { Text } = Typography;
 
 const Cell = ({ className, ...props }) => (
   <div
@@ -70,7 +72,7 @@ const Table = ({ loading, columns, bodyRef, data, onBottom, onClick, isLast }) =
             })}
         
           </div>
-              {!isLast && <div  ref={bottomRef} className="flex w-full border-t border-gray100 justify-center py-2">Loading...</div> }</>
+              {!isLast && <div  ref={bottomRef} className="flex w-full border-t border-gray100 justify-center py-2"><Text type="secondary">Loading...</Text></div> }</>
         )}
       </div>
     </div>

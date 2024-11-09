@@ -14,7 +14,10 @@ const paginateComments = (comments, page, pageSize) => {
   return sortedComments.slice(start, end);
 };
 
+const delay = (ms) => new Promise((resolve) => setTimeout(resolve, ms));
+
 export async function GET(request) {
+  await delay(1000)
   const url = new URL(request.url);
   const page = parseInt(url.searchParams.get('page') || '1');
   const pageSize = parseInt(url.searchParams.get('page_size') || '10');
