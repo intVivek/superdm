@@ -1,5 +1,6 @@
 import useIsVisible from "@/hooks/useIsVisible";
-import { useLayoutEffect, useRef } from "react";
+import { Skeleton, Spin } from "antd";
+import { useEffect, useLayoutEffect, useRef } from "react";
 import { twMerge } from "tailwind-merge";
 
 const Cell = ({ className, ...props }) => (
@@ -12,17 +13,18 @@ const Cell = ({ className, ...props }) => (
   />
 );
 
-const Table = ({ loading, columns, bodyRef, data, onBottom, onClick }) => {
+const Table = ({ loading, columns, bodyRef, data, onBottom, onClick, isLast }) => {
   const bottomRef = useRef();
 
   const isVisible = useIsVisible(bottomRef);
+
   useLayoutEffect(() => {
     if (isVisible) onBottom();
   }, [isVisible, bottomRef]);
 
   return (
-    <div className="overflow-hidden border border-gray100 rounded-[8px] mb-8 mt-4 h-max max-h-[60vh]">
-      <div className="overflow-auto bg-white w-full h-max max-h-[60vh]">
+    <div className="overflow-hidden border border-gray100 rounded-[8px] mb-8 mt-4 h-max max-h-[50vh]">
+      <div className="overflow-auto bg-white w-full h-max max-h-[50vh]">
         <div className="bg-gray120 sticky top-0 z-10 flex">
           {columns.map((item, i) => (
             <Cell
@@ -40,20 +42,20 @@ const Table = ({ loading, columns, bodyRef, data, onBottom, onClick }) => {
         </div>
         {loading ? (
           <TableSkeletonLoading />
-        ) : (
-          <div ref={bodyRef} className="bg-white relative" >
+        ) : (<>
+          <div ref={bodyRef} className="bg-white relative">
             {data?.map((row, index) => {
               return (
                 <div
                   tabIndex={0}
                   key={index}
                   className={"flex arrow-navigation-row"}
-                  onClick={(e)=>onClick(row, index, e)}
-                  onKeyDown={(e) =>{
+                  onClick={(e) => onClick(row, index, e)}
+                  onKeyDown={(e) => {
                     if (e.key === "Enter") {
                       onClick(row, index, e);
                     }
-                  }} 
+                  }}
                 >
                   {columns.map(({ render, key }, i) => (
                     <Cell
@@ -66,11 +68,9 @@ const Table = ({ loading, columns, bodyRef, data, onBottom, onClick }) => {
                 </div>
               );
             })}
-            <div
-              ref={bottomRef}
-              className="h-1 absolute bottom-0 left-0 w-full"
-            />
+        
           </div>
+              {!isLast && <div  ref={bottomRef} className="flex w-full border-t border-gray100 justify-center py-2">Loading...</div> }</>
         )}
       </div>
     </div>

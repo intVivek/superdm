@@ -39,11 +39,10 @@ export default function Dashboard() {
         });
       }
     };
-    const keydownHandler = (e) => handleKeyDown(e);
 
-    window.addEventListener("keydown", keydownHandler);
+    window.addEventListener("keydown", handleKeyDown);
     return () => {
-      window.removeEventListener("keydown", keydownHandler);
+      window.removeEventListener("keydown", handleKeyDown);
     };
   }, [selectedTab]);
 

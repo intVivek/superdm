@@ -1,8 +1,13 @@
 import { useLayoutEffect, useRef, useState } from "react";
 
-const useArrowNavigation = () => {
+const useArrowNavigation = ({deps}) => {
     const [selectedIndex, setSelectedIndex] = useState(0);
     const ref = useRef();
+
+    const resetNavigation = () => {
+      ref?.current?.scrollTo(0, 0)
+      setSelectedIndex(0)
+    }
 
     useLayoutEffect(() => {
       const handleKeyDown = (e) => {
@@ -32,14 +37,14 @@ const useArrowNavigation = () => {
         window.removeEventListener("click", handleClick);
         window.removeEventListener("mousedown", (e)=>e.preventDefault());
       };
-    }, [selectedIndex, ref.current]);
+    }, [selectedIndex, ref.current, ref?.current?.childNodes, ...deps]);
   
     useLayoutEffect(() => {
       const rows = ref?.current?.childNodes || [];
       rows[selectedIndex]?.focus();
-    }, [selectedIndex, ref.current]);
+    }, [selectedIndex, ref.current, ...deps]);
 
-    return {ref, selectedIndex}
+    return {ref, selectedIndex, resetNavigation}
 }
 
 export default useArrowNavigation
