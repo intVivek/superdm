@@ -5,6 +5,7 @@ import Table from "../Table/Table";
 import moment from "moment";
 import DetailsModal from "../DetailsModal/DetailsModal";
 import { useDebounceCallback } from "usehooks-ts";
+import useTickets from "@/hooks/useTickets";
 
 const columns = [
   {
@@ -45,31 +46,20 @@ const columns = [
 ];
 
 export default function TicketsTable({selectedTab}) {
-  const [data, setData] = useState([]);
   const [isLast, setIsLast] = useState(false);
   const [page, setPage] = useState(1);
 
   const [selectedRow, setSelectedRow] = useState(-1);
 
-  const { ref, resetNavigation } = useArrowNavigation({deps: [selectedTab, page]});
+  
+  const { data, isFetching } = useTickets(page, selectedTab);
 
-  const fetchTickets = useCallback(async () => {
-    try {
-      const response = await fetch(`/api/ticket?pageSize=${page * 5}&status=${selectedTab}`);
-      const data = await response.json();
-      console.log(data);
-      setData(data.data);
-      setIsLast(data?.meta?.isLast);
-    } catch (error) {
-      console.error("Error fetching tickets:", error);
-    }
-  }, [page, selectedTab]); 
+  const { ref, resetNavigation } = useArrowNavigation({deps: [selectedTab, page, data]});
 
   const onBottomHandler = () => {
     setPage((p) => p + 1);
   };
 
-  const debouncedFetchTickets = useDebounceCallback(fetchTickets, 200)
   const debouncedOnBottomHandler = useDebounceCallback(onBottomHandler, 200)
 
   const onClickHandler = (row, i) => {
@@ -77,16 +67,13 @@ export default function TicketsTable({selectedTab}) {
   };
 
   useEffect(()=>{
-    setData([])
     setPage(1)
-    setIsLast(false)
     resetNavigation()
   }, [selectedTab])
 
-  useEffect(() => {
-    if(isLast) return;
-    debouncedFetchTickets();
-  }, [page, selectedTab, isLast]);
+  useEffect(()=>{
+    setIsLast(data?.meta?.isLast)
+  }, [data?.meta?.isLast])
 
   return (
     <>
@@ -94,13 +81,13 @@ export default function TicketsTable({selectedTab}) {
         bodyRef={ref}
         columns={columns}
         onBottom={debouncedOnBottomHandler}
-        data={data}
+        data={data?.data}
         onClick={onClickHandler}
         isLast={isLast}
       />
       {selectedRow !== -1 && (
         <DetailsModal
-          data={data?.find((item) => item.id === selectedRow)}
+          data={data?.data.find((item) => item.id === selectedRow)}
           isOpen={selectedRow !== -1}
           onClose={() => setSelectedRow(-1)}
         />

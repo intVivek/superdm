@@ -4,6 +4,7 @@ import { Tabs } from "antd";
 import { useEffect, useMemo, useState } from "react";
 import { Typography } from "antd";
 import TicketsTable from "../TicketsTable/TicketsTable";
+import { QueryClient, QueryClientProvider } from "react-query";
 
 const { Title } = Typography;
 
@@ -16,6 +17,8 @@ const items = tabsType.map((tab, index) => ({
 
 export default function Dashboard() {
   const [selectedTab, setSelectedTab] = useState("1");
+
+  const queryClient = new QueryClient();
 
   const handleTabChange = (key) => {
     console.log(key);
@@ -48,6 +51,7 @@ export default function Dashboard() {
 
   return (
     <div className="w-screen flex justify-center">
+            <QueryClientProvider client={queryClient}>
       <div className="w-[90%]">
         <div className="mt-12">
           <Title>Tickets</Title>
@@ -65,6 +69,7 @@ export default function Dashboard() {
         />
         <TicketsTable selectedTab={tabsType[selectedTab-1]} />
       </div>
+      </QueryClientProvider>
     </div>
   );
 }
