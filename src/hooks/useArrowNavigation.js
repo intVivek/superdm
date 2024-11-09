@@ -1,6 +1,6 @@
 import { useLayoutEffect, useRef, useState } from "react";
 
-const useArrowNavigation = ({deps}) => {
+const useArrowNavigation = ({disabled, deps}) => {
     const [selectedIndex, setSelectedIndex] = useState(0);
     const ref = useRef();
 
@@ -10,6 +10,7 @@ const useArrowNavigation = ({deps}) => {
     }
 
     useLayoutEffect(() => {
+      if(disabled) return;
       const handleKeyDown = (e) => {
         const rows = ref?.current?.childNodes || [];
         if (e.key === "ArrowUp" && selectedIndex > 0) {
@@ -30,19 +31,18 @@ const useArrowNavigation = ({deps}) => {
   
       window.addEventListener("keydown", handleKeyDown);
       window.addEventListener("click", handleClick);
-      window.addEventListener("mousedown", (e)=>e.preventDefault());
   
       return () => {
         window.removeEventListener("keydown", handleKeyDown);
         window.removeEventListener("click", handleClick);
-        window.removeEventListener("mousedown", (e)=>e.preventDefault());
       };
-    }, [selectedIndex, ref.current, ref?.current?.childNodes, ...deps]);
+    }, [selectedIndex, ref.current, ref?.current?.childNodes, disabled, ...deps]);
   
     useLayoutEffect(() => {
+      if(disabled) return;
       const rows = ref?.current?.childNodes || [];
       rows[selectedIndex]?.focus();
-    }, [selectedIndex, ref.current, ...deps]);
+    }, [selectedIndex, disabled, ref.current, ...deps]);
 
     return {ref, selectedIndex, resetNavigation}
 }

@@ -651,6 +651,86 @@ let sharedData = {
       status: "In Progress",
     },
   ],
+  comments: [
+    {
+      id: 1,
+      content: "Great work on the task, keep it up!",
+      name_of_sender: "Alice",
+      created_at: "2024-11-09T08:45:00Z",
+    },
+    {
+      id: 2,
+      content: "I agree with the suggestions in the meeting notes.",
+      name_of_sender: "Bob",
+      created_at: "2024-11-09T08:50:00Z",
+    },
+    {
+      id: 3,
+      content:
+        "Has anyone started the new feature? We should discuss it in the next call.",
+      name_of_sender: "Charlie",
+      created_at: "2024-11-09T09:00:00Z",
+    },
+    {
+      id: 4,
+      content: "I reviewed the pull request. Everything looks good to me.",
+      name_of_sender: "David",
+      created_at: "2024-11-09T09:05:00Z",
+    },
+    {
+      id: 5,
+      content: "Let's sync up tomorrow to finalize the UI design.",
+      name_of_sender: "Eve",
+      created_at: "2024-11-09T09:15:00Z",
+    },
+    {
+      id: 6,
+      content: "Can someone share the latest version of the specs document?",
+      name_of_sender: "Frank",
+      created_at: "2024-11-09T09:25:00Z",
+    },
+    {
+      id: 7,
+      content: "The server logs are clean now. All issues are fixed.",
+      name_of_sender: "Grace",
+      created_at: "2024-11-09T09:30:00Z",
+    },
+    {
+      id: 8,
+      content:
+        "I pushed a new commit to the repo. Please review when you get a chance.",
+      name_of_sender: "Hannah",
+      created_at: "2024-11-09T09:35:00Z",
+    },
+    {
+      id: 9,
+      content:
+        "We should prioritize the critical bugs first, and then move to enhancements.",
+      name_of_sender: "Ivy",
+      created_at: "2024-11-09T09:40:00Z",
+    },
+    {
+      id: 10,
+      content:
+        "I will be offline for the rest of the day, please ping me if urgent.",
+      name_of_sender: "Jack",
+      created_at: "2024-11-09T09:50:00Z",
+    },
+    {
+      id: 11,
+      content:
+        "The feedback from the client was positive. They are happy with the progress.",
+      name_of_sender: "Kim",
+      created_at: "2024-11-09T10:00:00Z",
+    },
+    {
+      id: 12,
+      content:
+        "Does anyone have suggestions for improving performance? Let's discuss it in the next sprint planning.",
+      name_of_sender: "Liam",
+      created_at: "2024-11-09T10:10:00Z",
+    },
+  ],
 };
 
 export const setSharedData = (key, value) => {

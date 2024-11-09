@@ -45,35 +45,39 @@ const columns = [
   },
 ];
 
-export default function TicketsTable({selectedTab}) {
+export default function TicketsTable({
+  selectedTab,
+  selectedRow,
+  setSelectedRow,
+}) {
   const [isLast, setIsLast] = useState(false);
   const [page, setPage] = useState(1);
 
-  const [selectedRow, setSelectedRow] = useState(-1);
-
-  
   const { data, isFetching, refetch } = useTickets(page, selectedTab);
 
-  const { ref, resetNavigation } = useArrowNavigation({deps: [selectedTab, page, data]});
+  const { ref, resetNavigation } = useArrowNavigation({
+    disabled: selectedRow !== -1,
+    deps: [selectedTab, page, data],
+  });
 
   const onBottomHandler = () => {
     setPage((p) => p + 1);
   };
 
-  const debouncedOnBottomHandler = useDebounceCallback(onBottomHandler, 200)
+  const debouncedOnBottomHandler = useDebounceCallback(onBottomHandler, 200);
 
   const onClickHandler = (row, i) => {
     setSelectedRow(row);
   };
 
-  useEffect(()=>{
-    setPage(1)
-    resetNavigation()
-  }, [selectedTab])
+  useEffect(() => {
+    setPage(1);
+    resetNavigation();
+  }, [selectedTab]);
 
-  useEffect(()=>{
-    setIsLast(data?.meta?.isLast)
-  }, [data?.meta?.isLast])
+  useEffect(() => {
+    setIsLast(data?.meta?.isLast);
+  }, [data?.meta?.isLast]);
 
   return (
     <>
@@ -90,7 +94,7 @@ export default function TicketsTable({selectedTab}) {
           data={selectedRow}
           isOpen={selectedRow !== -1}
           onClose={() => setSelectedRow(-1)}
-          onSuccess={async()=>await refetch(page, selectedTab)}
+          onSuccess={async () => await refetch(page, selectedTab)}
         />
       )}
     </>

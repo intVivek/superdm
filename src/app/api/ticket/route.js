@@ -1,11 +1,13 @@
 import { getSharedData } from "@/app/lib/sharedStore";
 import { NextResponse } from "next/server";
 
+const delay = (ms) => new Promise((resolve) => setTimeout(resolve, ms));
+
 export async function GET(request) {
 
   const tickets = getSharedData("tickets");
-  console.log('sad', tickets)
   try {
+    await delay(1000);
     const { searchParams } = new URL(request.url);
 
     const page = searchParams.get("page") || "1";

@@ -11,8 +11,9 @@ import {
   Select,
 } from "antd";
 import Badge from "../Badge/Badge";
-import { useState } from "react";
+import { useEffect, useState } from "react";
 import useTicketsMutation from "@/hooks/useTicketsMutation";
+import Comments from "../Comments/Comments";
 
 const { Text } = Typography;
 
@@ -62,6 +63,7 @@ export default function DetailsModal({ data, isOpen, onClose, onSuccess }) {
 
   return (
     <Modal
+      className="tickets-details-modal"
       title={data.name}
       open={isOpen}
       onCancel={onClose}
@@ -72,10 +74,10 @@ export default function DetailsModal({ data, isOpen, onClose, onSuccess }) {
           Close
         </Button>,
       ]}
-      width={600}
+      width={780}
     >
       <div className="flex justify-between items-center mb-4">
-        {getPriorityBadge(data.priority)}{" "}
+        {getPriorityBadge(data.priority)}
         <Select
           defaultValue={data.status}
           style={{ width: 120 }}
@@ -129,6 +131,7 @@ export default function DetailsModal({ data, isOpen, onClose, onSuccess }) {
           </Row>
         </Card>
       </Tag.Ribbon>
+      <Comments ticket={data}/>
       {openConfirmModal!==-1 && <Modal
         title="Change Status"
         open={openConfirmModal!==-1}
