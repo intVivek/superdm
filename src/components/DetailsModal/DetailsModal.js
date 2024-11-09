@@ -12,6 +12,7 @@ import {
 } from "antd";
 import Badge from "../Badge/Badge";
 import { useState } from "react";
+import useTicketsMutation from "@/hooks/useTicketsMutation";
 
 const { Text } = Typography;
 
@@ -46,12 +47,16 @@ const Details = ({ title, value }) => {
   );
 };
 
-export default function DetailsModal({ data, isOpen, onClose }) {
+export default function DetailsModal({ data, isOpen, onClose, onSuccess }) {
 
   const [openConfirmModal, setOpenConfirmModal] = useState(-1);
 
-  const handleChangeStatus = () => {
+  const updateTickets = useTicketsMutation()
+
+  const handleChangeStatus = async () => {
+    await updateTickets.mutateAsync({id: data.id, data: {status: openConfirmModal}})
     console.log(openConfirmModal)
+    await onSuccess()
     setOpenConfirmModal(-1)
   }
 
@@ -131,7 +136,9 @@ export default function DetailsModal({ data, isOpen, onClose }) {
         onCancel={()=>setOpenConfirmModal(-1)}
         okText="Confirm"
         cancelText="Cancel"
+        width={400}
         centered
+        okButtonProps={{ disabled: updateTickets.isLoading, loading: updateTickets.isLoading }}
       >
         <p>Are you sure you want to change the status ?</p>
         </Modal>}

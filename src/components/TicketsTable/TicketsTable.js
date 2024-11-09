@@ -52,9 +52,13 @@ export default function TicketsTable({selectedTab}) {
   const [selectedRow, setSelectedRow] = useState(-1);
 
   
-  const { data, isFetching } = useTickets(page, selectedTab);
+  const { data, isFetching, refetch } = useTickets(page, selectedTab);
 
   const { ref, resetNavigation } = useArrowNavigation({deps: [selectedTab, page, data]});
+
+  useEffect(()=>{
+    refetch(page, selectedTab)
+  }, [page, selectedTab])
 
   const onBottomHandler = () => {
     setPage((p) => p + 1);
@@ -63,7 +67,7 @@ export default function TicketsTable({selectedTab}) {
   const debouncedOnBottomHandler = useDebounceCallback(onBottomHandler, 200)
 
   const onClickHandler = (row, i) => {
-    setSelectedRow(row.id);
+    setSelectedRow(row);
   };
 
   useEffect(()=>{
@@ -87,9 +91,10 @@ export default function TicketsTable({selectedTab}) {
       />
       {selectedRow !== -1 && (
         <DetailsModal
-          data={data?.data.find((item) => item.id === selectedRow)}
+          data={selectedRow}
           isOpen={selectedRow !== -1}
           onClose={() => setSelectedRow(-1)}
+          onSuccess={async()=>await refetch(page, selectedTab)}
         />
       )}
     </>
