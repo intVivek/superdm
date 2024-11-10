@@ -30,7 +30,7 @@ const Comments = ({ ticket }) => {
         }}
       >
         <Button loading={isFetching} onClick={onLoadMore}>
-          loading more
+          load more
         </Button>
       </div>
     ) : null;
