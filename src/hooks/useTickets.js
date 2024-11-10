@@ -1,8 +1,10 @@
 import { useQuery } from "react-query";
 
-  const fetchTickets = async (page, selectedTab) => {
+  const fetchTickets = async ({page, selectedTab, priority}) => {
+    console.log({page, selectedTab, priority})
+    
     try {
-      const response = await fetch(`/api/ticket?pageSize=${page * 5}&status=${selectedTab}`);
+      const response = await fetch(`/api/ticket?pageSize=${page * 5}&status=${selectedTab}&priority=${priority}`);
       const data = await response.json();
         return data
     } catch (error) {
@@ -10,10 +12,10 @@ import { useQuery } from "react-query";
     }
   }; 
 
-const useTickets = (page, selectedTab) => {
+const useTickets = (filters) => {
     return useQuery({
-        queryKey: ['tickets', page, selectedTab],
-        queryFn: ()=>fetchTickets(page, selectedTab),
+        queryKey: ['tickets', filters],
+        queryFn: ()=>fetchTickets(filters),
         keepPreviousData: true,
       });
   };

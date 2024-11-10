@@ -27,11 +27,11 @@ export async function GET(request) {
     let filteredTickets = tickets;
 
     // Apply filters
-    if (priority) {
-      filteredTickets = filteredTickets.filter(
-        (ticket) => ticket.priority === priority
-      );
-    }
+    if (priority && priority !== "All") {
+        filteredTickets = filteredTickets.filter(
+          (ticket) => ticket.priority === priority
+        );
+      }
 
     if (status) {
       filteredTickets = filteredTickets.filter(

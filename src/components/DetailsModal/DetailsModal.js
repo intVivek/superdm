@@ -30,7 +30,7 @@ export const getPriorityBadge = (priority) => {
   }
 };
 
-const prirorityOptions = [
+const statusOptions = [
   { value: "Open", label: "Open" },
   { value: "In Progress", label: "In Progress" },
   { value: "Closed", label: "Closed" },
@@ -80,7 +80,7 @@ export default function DetailsModal({ data, isOpen, onClose, onSuccess }) {
           defaultValue={data.status}
           style={{ width: 120 }}
           onChange={(value)=>setOpenConfirmModal(value)}
-          options={prirorityOptions}
+          options={statusOptions}
         />
       </div>
       <Tag.Ribbon text={`#${data.id}`}>
