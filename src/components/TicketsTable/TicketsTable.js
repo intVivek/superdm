@@ -121,6 +121,7 @@ export default function TicketsTable({
           style={{ width: 160 }}
           placeholder={"Select Prirority"}
           onChange={handlePrirorityFilter}
+          value={selectedPrirority}
           options={prirorityOptions}
         />
         <Title className="ml-auto" level={4}>
@@ -143,7 +144,7 @@ export default function TicketsTable({
           isOpen={selectedRow !== -1}
           onClose={() => setSelectedRow(-1)}
           onSuccess={async () =>
-            await refetch({ page, selectedTab, priority: value })
+            await refetch({ page, selectedTab, priority: selectedPrirority })
           }
         />
       )}

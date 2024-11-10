@@ -11,7 +11,7 @@ import {
   Select,
 } from "antd";
 import Badge from "../Badge/Badge";
-import { useEffect, useState } from "react";
+import { useState } from "react";
 import useTicketsMutation from "@/hooks/useTicketsMutation";
 import Comments from "../Comments/Comments";
 
@@ -55,7 +55,7 @@ export default function DetailsModal({ data, isOpen, onClose, onSuccess }) {
 
   const handleChangeStatus = async () => {
     await updateTickets.mutateAsync({id: data.id, data: {status: openConfirmModal}})
-    await onSuccess()
+    onSuccess()
     setOpenConfirmModal(-1)
   }
 
