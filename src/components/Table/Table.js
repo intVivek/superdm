@@ -46,6 +46,7 @@ const Table = ({ loading, columns, bodyRef, data, onBottom, onClick, isLast, isF
             </Cell>
           ))}
         </div>
+        {data?.length<=0 && <div  className="flex w-full h-[200px]  justify-center items-center"><Text type="secondary">Nothing to show here 🤷‍♂️</Text></div> }
         {loading ? (
           <div className="w-full h-[200px] grid place-items-center"> <Spin indicator={<LoadingOutlined spin />} size="large" /></div>
         ) : (<>

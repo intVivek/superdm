@@ -86,7 +86,7 @@ export default function DetailsModal({ data, isOpen, onClose, onSuccess }) {
 
     window.addEventListener('keydown', handleKeyDown);
     return ()=>window.removeEventListener('keydown', handleKeyDown);
-  }, [openConfirmModal, inputRef.current])
+  }, [openConfirmModal])
 
   return (
     <Modal

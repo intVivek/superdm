@@ -2,7 +2,6 @@ import { useQuery } from "react-query";
 import { useDebounceValue } from "usehooks-ts";
 
 const fetchTickets = async ({ page, selectedTab, priority }) => {
-  console.log({ page, selectedTab, priority });
 
   try {
     const response = await fetch(`/api/ticket?pageSize=${page * 5}&status=${selectedTab}&priority=${priority}`);
