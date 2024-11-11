@@ -4,11 +4,14 @@ import useComments from "@/hooks/useComments";
 import { SendOutlined } from "@ant-design/icons";
 import TextArea from "antd/es/input/TextArea";
 import useCommentsMutation from "@/hooks/useCommentsMutation";
+import { useDebounceValue } from "usehooks-ts";
 
 const Comments = ({ ticket }) => {
   const [page, setPage] = useState(1);
   const [comment, setComment] = useState("");
-  const { data, isFetching, isLoading, refetch } = useComments(page, ticket?.id);
+
+  const [debouncedId] = useDebounceValue(ticket?.id)
+  const { data, isFetching, isLoading, refetch } = useComments(page, debouncedId);
 
   const updateComments = useCommentsMutation()
 
