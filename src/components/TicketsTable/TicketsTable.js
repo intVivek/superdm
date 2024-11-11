@@ -81,7 +81,7 @@ export default function TicketsTable({
   });
 
   const { ref, resetNavigation } = useArrowNavigation({
-    disabled: selectedRow !== -1,
+    isHorizonal: selectedRow !== -1,
     deps: [selectedTab, page, data],
   });
 
