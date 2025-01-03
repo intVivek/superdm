@@ -42,11 +42,11 @@ const Details = ({ title, value }) => {
   );
 };
 
-export default function DetailsModal({ data, isOpen, onClose, onSuccess }) {
+export default function DetailsModal({ data, isOpen, onClose, onSuccess, openConfirmModal, setOpenConfirmModal }) {
 
   const [status, setStatus] = useState(data?.status)
-  const [ openConfirmModal, setOpenConfirmModal] = useState(-1);
   const confirmButtonRef = useRef();
+  const cancelButtonRef = useRef();
 
   const statusOptions = useMemo(() => {
     return [
@@ -87,6 +87,23 @@ export default function DetailsModal({ data, isOpen, onClose, onSuccess }) {
     window.addEventListener('keydown', handleKeyDown);
     return ()=>window.removeEventListener('keydown', handleKeyDown);
   }, [openConfirmModal])
+
+  useEffect(()=>{
+    const handleKeyDown = async (e) => {
+      if(e.key==='Escape'){
+        setOpenConfirmModal(-1)
+      }
+      if(e.key==='ArrowRight'){
+        confirmButtonRef?.current?.focus();
+      }
+      if(e.key==='ArrowLeft'){
+        cancelButtonRef?.current?.focus();
+      }
+    }
+
+    window.addEventListener('keydown', handleKeyDown);
+    return ()=>window.removeEventListener('keydown', handleKeyDown);
+  },  [openConfirmModal])
 
   return (
     <Modal
@@ -173,6 +190,7 @@ export default function DetailsModal({ data, isOpen, onClose, onSuccess }) {
         cancelText="Cancel"
         width={400}
         centered
+        cancelButtonProps={{ref: cancelButtonRef}}
         okButtonProps={{ disabled: updateTickets.isLoading, loading: updateTickets.isLoading, ref: confirmButtonRef }}
       >
         <p>{`Are you sure you want to change the status to ${openConfirmModal}?`}</p>

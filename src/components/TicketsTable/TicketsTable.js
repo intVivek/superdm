@@ -72,6 +72,7 @@ export default function TicketsTable({
   const selectRef = useRef()
   const [selectedPrirority, setSelectedPrirority] = useState(prirorityOptions[0].value)
   const [isLast, setIsLast] = useState(false);
+  const [ openConfirmModal, setOpenConfirmModal] = useState(-1);
   const [page, setPage] = useState(1);
 
   const { data, isFetching, refetch } = useTickets({
@@ -83,6 +84,7 @@ export default function TicketsTable({
   const { ref, resetNavigation } = useArrowNavigation({
     isHorizonal: selectedRow !== -1,
     deps: [selectedTab, page, data],
+    disabled: openConfirmModal !== -1,
   });
 
   const onBottomHandler = () => {
@@ -143,6 +145,8 @@ export default function TicketsTable({
           data={selectedRow}
           isOpen={selectedRow !== -1}
           onClose={() => setSelectedRow(-1)}
+          openConfirmModal={openConfirmModal}
+          setOpenConfirmModal={setOpenConfirmModal}
           onSuccess={async () =>
             await refetch({ page, selectedTab, priority: selectedPrirority })
           }
